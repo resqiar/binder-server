@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { Extension } from 'src/entities/extension.entity';
 import { ExtensionService } from 'src/services/extension.service';
 
 @Controller('ext')
@@ -6,7 +7,7 @@ export class ExtensionController {
   constructor(private readonly extService: ExtensionService) {}
 
   @Get()
-  createExtension(): string {
-    return this.extService.get();
+  async getExtensions(): Promise<Extension[]> {
+    return await this.extService.getAll();
   }
 }
