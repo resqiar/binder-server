@@ -18,10 +18,7 @@ export class Extension {
   description: string;
 
   @Column({ nullable: true })
-  profile_url: string;
-
-  @Column()
-  type: string;
+  image_url: string;
 
   @CreateDateColumn()
   created_at: Date;
