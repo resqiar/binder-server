@@ -41,4 +41,9 @@ export class ExtensionController {
   ): Promise<number> {
     return await this.extService.update(id, createInput);
   }
+
+  @Post('remove/:id')
+  async removeExtension(@Param('id') id: number): Promise<number> {
+    return await this.extService.remove(id);
+  }
 }

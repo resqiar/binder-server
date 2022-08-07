@@ -30,4 +30,11 @@ export class ExtensionService {
     await this.extRepo.update(id, Object.assign({}, createInput));
     return 200;
   }
+
+  async remove(id: number): Promise<number> {
+    const targetExt = await this.extRepo.findOneBy({ id: id.toString() });
+    if (!targetExt) throw new NotFoundException();
+    await this.extRepo.delete(targetExt.id);
+    return 200;
+  }
 }
