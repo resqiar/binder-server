@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExtInput } from 'src/dtos/create-ext.input';
 import { Extension } from 'src/entities/extension.entity';
@@ -15,8 +15,19 @@ export class ExtensionService {
     return await this.extRepo.find();
   }
 
+  async getOne(id: number): Promise<Extension | null> {
+    return await this.extRepo.findOneBy({ id: id.toString() });
+  }
+
   async create(createInput: CreateExtInput): Promise<Extension> {
     const createdExt = this.extRepo.create(createInput);
     return await this.extRepo.save(createdExt);
+  }
+
+  async update(id: number, createInput: CreateExtInput): Promise<number> {
+    const targetExt = await this.extRepo.findOneBy({ id: id.toString() });
+    if (!targetExt) throw new NotFoundException();
+    await this.extRepo.update(id, Object.assign({}, createInput));
+    return 200;
   }
 }
