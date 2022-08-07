@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateExtInput } from 'src/dtos/create-ext.input';
 import { Extension } from 'src/entities/extension.entity';
 import { Repository } from 'typeorm';
 
@@ -12,5 +13,10 @@ export class ExtensionService {
 
   async getAll(): Promise<Extension[]> {
     return await this.extRepo.find();
+  }
+
+  async create(createInput: CreateExtInput): Promise<Extension> {
+    const createdExt = this.extRepo.create(createInput);
+    return await this.extRepo.save(createdExt);
   }
 }

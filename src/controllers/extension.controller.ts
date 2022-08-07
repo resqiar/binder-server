@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { CreateExtInput } from 'src/dtos/create-ext.input';
 import { Extension } from 'src/entities/extension.entity';
 import { ExtensionService } from 'src/services/extension.service';
 
@@ -9,5 +10,12 @@ export class ExtensionController {
   @Get()
   async getExtensions(): Promise<Extension[]> {
     return await this.extService.getAll();
+  }
+
+  @Post('create')
+  async createExtension(
+    @Body(new ValidationPipe()) createInput: CreateExtInput,
+  ): Promise<Extension> {
+    return await this.extService.create(createInput);
   }
 }

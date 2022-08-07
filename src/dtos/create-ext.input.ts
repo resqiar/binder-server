@@ -1,4 +1,4 @@
-import { IsString, IsUrl, MinLength } from 'class-validator';
+import { IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
 
 export class CreateExtInput {
   @IsString()
@@ -6,8 +6,10 @@ export class CreateExtInput {
   title: string;
 
   @IsString()
+  @IsOptional()
   description: string;
 
   @IsUrl()
+  @IsOptional()
   image_url: string;
 }
