@@ -1,1 +1,1 @@
-web: pnpm run start:prod
+web: yarn start:prod
