@@ -12,7 +12,11 @@ export class ExtensionService {
   ) {}
 
   async getAll(): Promise<Extension[]> {
-    return await this.extRepo.find();
+    return await this.extRepo.find({
+      order: {
+        id: 'ASC',
+      },
+    });
   }
 
   async getOne(id: number): Promise<Extension | null> {
