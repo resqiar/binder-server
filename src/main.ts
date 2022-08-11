@@ -8,8 +8,6 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 
-// EMPTY TRIGGER
-
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
