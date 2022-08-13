@@ -18,6 +18,9 @@ export class Extension {
   description: string;
 
   @Column({ nullable: true })
+  image_id: string;
+
+  @Column({ nullable: true })
   image_url: string;
 
   @CreateDateColumn()

@@ -9,6 +9,10 @@ export class CreateExtInput {
   @IsOptional()
   description: string;
 
+  @IsString()
+  @IsOptional()
+  image_id: string;
+
   @IsUrl()
   @IsOptional()
   image_url: string;
