@@ -23,6 +23,9 @@ export class Extension {
   @Column({ nullable: true })
   image_url: string;
 
+  @Column({ nullable: true })
+  youtube_url: string;
+
   @CreateDateColumn()
   created_at: Date;
 

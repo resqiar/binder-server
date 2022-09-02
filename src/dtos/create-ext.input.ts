@@ -16,4 +16,8 @@ export class CreateExtInput {
   @IsUrl()
   @IsOptional()
   image_url: string;
+
+  @IsUrl()
+  @IsOptional()
+  youtube_url: string;
 }
