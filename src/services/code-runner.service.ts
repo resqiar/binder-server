@@ -10,20 +10,28 @@ export class CodeRunnerService {
   async callJdoodle(
     codeRunnerInput: CodeRunnerInput,
   ): Promise<CodeRunnerOutput> {
-    // Diagnostic error inside typescript code
-    const error = await this.diagnosticTS(codeRunnerInput.code);
-    if (error) throw new BadRequestException(error);
-    // Transpile typescript code to javascipt code.
-    // This must be done because JDoodle API only accept
-    // javascipt code that will be run inside nodejs.
-    const transpiledCode: string = this.compileTS(codeRunnerInput.code);
+    let transpiledCode: string = '';
+
+    if (codeRunnerInput.lang === 'typescript') {
+      // Diagnostic error inside typescript code
+      const error = await this.diagnosticTS(codeRunnerInput.code);
+      if (error) throw new BadRequestException(error);
+      // Transpile typescript code to javascipt code.
+      // This must be done because JDoodle API only accept
+      // javascipt code that will be run inside nodejs.
+      transpiledCode = this.compileTS(codeRunnerInput.code);
+    }
+
     // Body properties that we need to pass to Jdoodle,
     // more changes and props can be seen in the Jdoodle docs,
     // https://docs.jdoodle.com/integrating-compiler-ide-to-your-application/compiler-api
     const body = {
-      script: transpiledCode,
-      language: 'nodejs',
-      versionIndex: '0',
+      script:
+        codeRunnerInput.lang === 'typescript'
+          ? transpiledCode
+          : codeRunnerInput.code,
+      language: codeRunnerInput.lang === 'c++' ? 'cpp' : 'nodejs',
+      versionIndex: codeRunnerInput.lang === 'c++' ? '5' : '4',
       clientId: process.env.JDOODLE_CLIENT_KEY,
       clientSecret: process.env.JDOODLE_SERVER_KEY,
     };
