@@ -1,4 +1,11 @@
-import { IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
+import {
+  IsIn,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MinLength,
+  ValidateIf,
+} from 'class-validator';
 
 export class CreateExtInput {
   @IsString()
@@ -20,4 +27,13 @@ export class CreateExtInput {
   @IsUrl()
   @IsOptional()
   youtube_url: string;
+
+  @IsString()
+  @IsOptional()
+  code_text: string;
+
+  // Validate this field only when code_text is provided
+  @ValidateIf((v) => v.code_text)
+  @IsIn(['javascript', 'typescript', 'c++'])
+  code_lang: 'javascript' | 'typescript' | 'c++';
 }

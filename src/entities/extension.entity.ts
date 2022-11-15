@@ -26,6 +26,12 @@ export class Extension {
   @Column({ nullable: true })
   youtube_url: string;
 
+  @Column('text', { nullable: true })
+  code_text: string;
+
+  @Column({ nullable: true })
+  code_lang: string;
+
   @CreateDateColumn()
   created_at: Date;
 
