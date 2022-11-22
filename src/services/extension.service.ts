@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateExtInput } from 'src/dtos/create-ext.input';
-import { Extension } from 'src/entities/extension.entity';
+import { CreateExtInput } from '../dtos/create-ext.input';
+import { Extension } from '../entities/extension.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

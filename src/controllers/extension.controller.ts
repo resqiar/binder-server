@@ -7,9 +7,9 @@ import {
   Post,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateExtInput } from 'src/dtos/create-ext.input';
-import { Extension } from 'src/entities/extension.entity';
-import { ExtensionService } from 'src/services/extension.service';
+import { CreateExtInput } from '../dtos/create-ext.input';
+import { Extension } from '../entities/extension.entity';
+import { ExtensionService } from '../services/extension.service';
 
 @Controller('ext')
 export class ExtensionController {
