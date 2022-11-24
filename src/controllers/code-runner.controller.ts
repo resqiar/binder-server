@@ -17,6 +17,6 @@ export class CodeRunnerController {
   async runCode(
     @Body(new ValidationPipe()) codeRunnerInput: CodeRunnerInput,
   ): Promise<CodeRunnerOutput> {
-    return await this.codeRunnerService.callJdoodle(codeRunnerInput);
+    return await this.codeRunnerService.runCode(codeRunnerInput);
   }
 }
