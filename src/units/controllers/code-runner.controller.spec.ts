@@ -10,7 +10,7 @@ describe('CodeRunnerController', () => {
   let codeRunnerController: CodeRunnerController;
 
   const mockCodeRunnerService = {
-    callJdoodle: jest.fn((_: string) => {
+    runCode: jest.fn((_: string) => {
       const result: CodeRunnerOutput = {
         cpuTime: '0.08',
         memory: '200',
