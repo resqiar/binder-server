@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ServicesModule } from 'src/services/services.module';
+import { ServicesModule } from '../services/services.module';
 import { CodeRunnerController } from './code-runner.controller';
 import { ExtensionController } from './extension.controller';
 
