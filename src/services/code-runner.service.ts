@@ -1,15 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CodeRunnerOutput } from 'src/controllers/code-runner.controller';
-import { CodeRunnerInput } from 'src/dtos/code-runner.input';
+import { CodeRunnerOutput } from '../controllers/code-runner.controller';
+import { CodeRunnerInput } from '../dtos/code-runner.input';
 import { createProject, ts } from '@ts-morph/bootstrap';
 import axios from 'axios';
 import tsc from 'typescript';
 
 @Injectable()
 export class CodeRunnerService {
-  async callJdoodle(
-    codeRunnerInput: CodeRunnerInput,
-  ): Promise<CodeRunnerOutput> {
+  async runCode(codeRunnerInput: CodeRunnerInput): Promise<CodeRunnerOutput> {
     let transpiledCode: string = '';
 
     if (codeRunnerInput.lang === 'typescript') {
@@ -22,6 +20,14 @@ export class CodeRunnerService {
       transpiledCode = this.compileTS(codeRunnerInput.code);
     }
 
+    // Call API and return the result coming from Jdoodle
+    return await this.callJDoodle(codeRunnerInput, transpiledCode);
+  }
+
+  async callJDoodle(
+    codeRunnerInput: CodeRunnerInput,
+    transpiledCode: string,
+  ): Promise<CodeRunnerOutput> {
     // Body properties that we need to pass to Jdoodle,
     // more changes and props can be seen in the Jdoodle docs,
     // https://docs.jdoodle.com/integrating-compiler-ide-to-your-application/compiler-api

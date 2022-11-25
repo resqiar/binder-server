@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Extension } from 'src/entities/extension.entity';
+import { Extension } from '../entities/extension.entity';
 import { CodeRunnerService } from './code-runner.service';
 import { ExtensionService } from './extension.service';
 
