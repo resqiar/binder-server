@@ -20,7 +20,7 @@ export class ExtensionService {
   }
 
   async getOne(id: number): Promise<Extension | null> {
-    return await this.extRepo.findOneBy({ id: id.toString() });
+    return await this.extRepo.findOneBy({ id: id });
   }
 
   async create(createInput: CreateExtInput): Promise<Extension> {
@@ -29,14 +29,14 @@ export class ExtensionService {
   }
 
   async update(id: number, createInput: CreateExtInput): Promise<number> {
-    const targetExt = await this.extRepo.findOneBy({ id: id.toString() });
+    const targetExt = await this.extRepo.findOneBy({ id: id });
     if (!targetExt) throw new NotFoundException();
     await this.extRepo.update(id, Object.assign({}, createInput));
     return 200;
   }
 
   async remove(id: number): Promise<number> {
-    const targetExt = await this.extRepo.findOneBy({ id: id.toString() });
+    const targetExt = await this.extRepo.findOneBy({ id: id });
     if (!targetExt) throw new NotFoundException();
     await this.extRepo.delete(targetExt.id);
     return 200;
