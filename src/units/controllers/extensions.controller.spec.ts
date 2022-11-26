@@ -26,12 +26,12 @@ describe('Extensions Controller', () => {
     getOne: jest.fn((id: number) => {
       if (id !== 19) return null;
       const ext = new Extension();
-      ext.id = '19';
+      ext.id = 19;
       return Promise.resolve(ext);
     }),
     create: jest.fn((input: CreateExtInput) => {
       const ext = new Extension();
-      ext.id = Math.floor(Math.random() * 100).toString();
+      ext.id = Math.floor(Math.random() * 100);
       ext.title = input.title;
       return Promise.resolve(ext);
     }),
@@ -109,7 +109,7 @@ describe('Extensions Controller', () => {
     });
 
     it('Should return an Extension based on its ID', async () => {
-      const res = expect.objectContaining({ id: trueId.toString() });
+      const res = expect.objectContaining({ id: trueId });
       await expect(extController.getExtension(trueId)).resolves.toEqual(res);
     });
 
@@ -130,7 +130,7 @@ describe('Extensions Controller', () => {
       input.title = 'Test';
 
       const res = expect.objectContaining({
-        id: expect.any(String),
+        id: expect.any(Number),
         title: input.title,
       });
       await expect(extController.createExtension(input)).resolves.toEqual(res);

@@ -10,20 +10,20 @@ describe('Extension Service', () => {
 
   // Mock value used inside query builder.
   // This value is set in some case and always cleared afterward.
-  let mockSelectedID: string | undefined;
+  let mockSelectedID: number | undefined;
 
   const mockQueryBuilder: any = {
     select: (_: string) => {
       return mockQueryBuilder;
     },
-    where: (_: string, obj: { id: string }) => {
+    where: (_: string, obj: { id: number }) => {
       mockSelectedID = obj.id;
       return mockQueryBuilder;
     },
     getRawOne: () => {
-      if (mockSelectedID !== '19') return null;
+      if (mockSelectedID !== 19) return null;
       const ext = new Extension();
-      ext.id = '19';
+      ext.id = 19;
       return Promise.resolve(ext);
     },
   };
@@ -38,7 +38,7 @@ describe('Extension Service', () => {
     findOneBy: jest.fn((input: { id: string }) => {
       if (Number(input.id) !== 19) return null;
       const ext = new Extension();
-      ext.id = '19';
+      ext.id = 19;
       return Promise.resolve(ext);
     }),
     create: jest.fn((input: CreateExtInput) => {
@@ -46,7 +46,7 @@ describe('Extension Service', () => {
     }),
     save: jest.fn((input: Extension) => {
       const ext = new Extension();
-      ext.id = Math.floor(Math.random() * 100).toString();
+      ext.id = Math.floor(Math.random() * 100);
       ext.title = input.title;
       return Promise.resolve(ext);
     }),
@@ -62,6 +62,7 @@ describe('Extension Service', () => {
     const app: TestingModule = await Test.createTestingModule({
       providers: [
         ExtensionService,
+
         {
           provide: getRepositoryToken(Extension),
           useValue: mockExtRepo,
@@ -100,7 +101,7 @@ describe('Extension Service', () => {
     });
 
     it('Should return an Extension based on its ID', async () => {
-      const res = expect.objectContaining({ id: trueId.toString() });
+      const res = expect.objectContaining({ id: trueId });
       await expect(extService.getOne(trueId)).resolves.toEqual(res);
     });
 
@@ -119,7 +120,7 @@ describe('Extension Service', () => {
       input.title = 'Test';
 
       const res = expect.objectContaining({
-        id: expect.any(String),
+        id: expect.any(Number),
         title: input.title,
       });
 

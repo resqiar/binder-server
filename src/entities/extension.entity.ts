@@ -9,7 +9,7 @@ import {
 @Entity()
 export class Extension {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column({ nullable: true })
   title: string;
