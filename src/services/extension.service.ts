@@ -11,16 +11,25 @@ export class ExtensionService {
     private readonly extRepo: Repository<Extension>,
   ) {}
 
-  async getAll(): Promise<Extension[]> {
+  async getAll(
+    take: number | undefined = 9,
+    skip: number | undefined = 0,
+  ): Promise<Extension[]> {
     return await this.extRepo.find({
       order: {
         id: 'ASC',
       },
+      take: take,
+      skip: skip,
     });
   }
 
-  async getOne(id: number): Promise<Extension | null> {
-    return await this.extRepo.findOneBy({ id: id });
+  async getOne(id: number): Promise<Extension | undefined | null> {
+    return await this.extRepo
+      .createQueryBuilder()
+      .select('*')
+      .where('id = :id', { id: id.toString() })
+      .getRawOne();
   }
 
   async create(createInput: CreateExtInput): Promise<Extension> {

@@ -8,7 +8,28 @@ import { ExtensionService } from '../../services/extension.service';
 describe('Extension Service', () => {
   let extService: ExtensionService;
 
+  // Mock value used inside query builder.
+  // This value is set in some case and always cleared afterward.
+  let mockSelectedID: string | undefined;
+
+  const mockQueryBuilder: any = {
+    select: (_: string) => {
+      return mockQueryBuilder;
+    },
+    where: (_: string, obj: { id: string }) => {
+      mockSelectedID = obj.id;
+      return mockQueryBuilder;
+    },
+    getRawOne: () => {
+      if (mockSelectedID !== '19') return null;
+      const ext = new Extension();
+      ext.id = '19';
+      return Promise.resolve(ext);
+    },
+  };
+
   const mockExtRepo = {
+    createQueryBuilder: jest.fn(() => mockQueryBuilder),
     find: jest.fn(() => {
       const ext = new Extension();
       ext.title = 'example';
@@ -48,6 +69,11 @@ describe('Extension Service', () => {
       ],
     }).compile();
     extService = app.get<ExtensionService>(ExtensionService);
+  });
+
+  afterEach(() => {
+    // Reset the selected value after every test case
+    mockSelectedID = undefined;
   });
 
   it('Should be defined', () => {

@@ -1,10 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   NotFoundException,
   Param,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateExtInput } from '../dtos/create-ext.input';
@@ -16,13 +18,21 @@ export class ExtensionController {
   constructor(private readonly extService: ExtensionService) {}
 
   @Get()
-  async getExtensions(): Promise<Extension[]> {
-    return await this.extService.getAll();
+  async getExtensions(
+    @Query('take') take: number | undefined,
+    @Query('skip') skip: number | undefined,
+  ): Promise<Extension[]> {
+    return await this.extService.getAll(take, skip);
   }
 
   @Get(':id')
   async getExtension(@Param('id') id: number): Promise<Extension> {
+    // If the ID given is not a number then we need to throw some error
+    if (isNaN(id)) throw new BadRequestException('ID is not a number');
+
     const targetExt = await this.extService.getOne(id);
+
+    // If not found then throw an error
     if (!targetExt) throw new NotFoundException();
     return targetExt;
   }

@@ -9,11 +9,20 @@ describe('Extensions Controller', () => {
   let extController: ExtensionController;
 
   const mockExtService = {
-    getAll: jest.fn(() => {
-      const ext = new Extension();
-      ext.title = 'example';
-      return Promise.resolve([ext]);
-    }),
+    getAll: jest.fn(
+      (take: number | undefined = 9, _: number | undefined = 0) => {
+        const ext = new Extension();
+        ext.title = 'example';
+
+        const result = [
+          ...Array(take)
+            .fill(0)
+            .map(() => ext),
+        ];
+
+        return Promise.resolve(result);
+      },
+    ),
     getOne: jest.fn((id: number) => {
       if (id !== 19) return null;
       const ext = new Extension();
@@ -54,13 +63,40 @@ describe('Extensions Controller', () => {
   });
 
   describe('Get Extensions Endpoint', () => {
+    const take: number | undefined = 5;
+    const skip: number | undefined = 0;
+
     it('Should be defined', () => {
       expect(extController.getExtensions).toBeDefined();
     });
 
     it('Should return an array of Extensions', async () => {
       const res = expect.arrayContaining([expect.any(Extension)]);
-      await expect(extController.getExtensions()).resolves.toEqual(res);
+      await expect(extController.getExtensions(take, skip)).resolves.toEqual(
+        res,
+      );
+    });
+
+    it('Should return 5 of Extensions when take is defined as 5', async () => {
+      await expect(
+        extController.getExtensions(take, skip),
+      ).resolves.toHaveLength(5);
+    });
+
+    it('Should return default value of 9 Extensions when take is undefined', async () => {
+      await expect(
+        extController.getExtensions(undefined, skip),
+      ).resolves.toHaveLength(9);
+    });
+
+    it('Should still return default value when take and skip is undefined', async () => {
+      const res = expect.arrayContaining([expect.any(Extension)]);
+      await expect(
+        extController.getExtensions(undefined, undefined),
+      ).resolves.toEqual(res);
+      await expect(
+        extController.getExtensions(undefined, undefined),
+      ).resolves.toHaveLength(9);
     });
   });
 
