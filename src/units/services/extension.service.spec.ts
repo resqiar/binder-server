@@ -10,20 +10,20 @@ describe('Extension Service', () => {
 
   // Mock value used inside query builder.
   // This value is set in some case and always cleared afterward.
-  let mockSelectedID: string | undefined;
+  let mockSelectedID: number | undefined;
 
   const mockQueryBuilder: any = {
     select: (_: string) => {
       return mockQueryBuilder;
     },
-    where: (_: string, obj: { id: string }) => {
+    where: (_: string, obj: { id: number }) => {
       mockSelectedID = obj.id;
       return mockQueryBuilder;
     },
     getRawOne: () => {
-      if (mockSelectedID !== '19') return null;
+      if (mockSelectedID !== 19) return null;
       const ext = new Extension();
-      ext.id = '19';
+      ext.id = 19;
       return Promise.resolve(ext);
     },
   };
@@ -62,6 +62,7 @@ describe('Extension Service', () => {
     const app: TestingModule = await Test.createTestingModule({
       providers: [
         ExtensionService,
+
         {
           provide: getRepositoryToken(Extension),
           useValue: mockExtRepo,

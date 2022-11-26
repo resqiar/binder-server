@@ -28,7 +28,7 @@ export class ExtensionService {
     return await this.extRepo
       .createQueryBuilder()
       .select('*')
-      .where('id = :id', { id: id.toString() })
+      .where('id = :id', { id: id })
       .getRawOne();
   }
 
