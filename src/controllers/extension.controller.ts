@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   NotFoundException,
   Param,
   Post,
@@ -18,6 +19,7 @@ export class ExtensionController {
   constructor(private readonly extService: ExtensionService) {}
 
   @Get()
+  @Header('cache-control', 'public,max-age=3600') // 1 hour max cache
   async getExtensions(
     @Query('take') take: number | undefined,
     @Query('skip') skip: number | undefined,
