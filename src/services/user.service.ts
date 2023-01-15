@@ -46,4 +46,14 @@ export class UserService {
       username: username,
     });
   }
+
+  async findById(id: string): Promise<User | null> {
+    return await this.userRepo.findOne({
+      where: {
+        id: id,
+      },
+      cache: true,
+      select: ['id', 'username', 'is_admin', 'profile_url', 'created_at'],
+    });
+  }
 }

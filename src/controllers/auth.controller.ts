@@ -2,10 +2,15 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Post,
+  Req,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { RegisterInput } from 'src/dtos/register.input';
+import { User } from 'src/entities/user.entity';
+import { JwtAuthGuard } from 'src/guards/jwt.guard';
 import { AuthService } from 'src/services/auth.service';
 import { UserService } from 'src/services/user.service';
 
@@ -15,6 +20,12 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
+
+  @Get('check')
+  @UseGuards(JwtAuthGuard)
+  async currentUser(@Req() req: ProtectedRequest): Promise<User | null> {
+    return await this.userService.findById(req.user.id);
+  }
 
   @Post('register')
   async register(@Body(new ValidationPipe()) registerInput: RegisterInput) {
