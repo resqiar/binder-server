@@ -8,17 +8,23 @@ import {
   Param,
   Post,
   Query,
+  Req,
+  UnauthorizedException,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
+import { UserService } from 'src/services/user.service';
 import { CreateExtInput } from '../dtos/create-ext.input';
 import { Extension } from '../entities/extension.entity';
 import { ExtensionService } from '../services/extension.service';
 
 @Controller('ext')
 export class ExtensionController {
-  constructor(private readonly extService: ExtensionService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly extService: ExtensionService,
+  ) {}
 
   @Get()
   @Header('cache-control', 'public,max-age=3600') // 1 hour max cache
@@ -44,23 +50,34 @@ export class ExtensionController {
   @Post('create')
   @UseGuards(JwtAuthGuard)
   async createExtension(
+    @Req() req: ProtectedRequest,
     @Body(new ValidationPipe()) createInput: CreateExtInput,
   ): Promise<Extension> {
+    const isAdmin = await this.userService.findAdminById(req.user.id);
+    if (!isAdmin) throw new UnauthorizedException();
     return await this.extService.create(createInput);
   }
 
   @Post('update/:id')
   @UseGuards(JwtAuthGuard)
   async updateExtension(
+    @Req() req: ProtectedRequest,
     @Param('id') id: number,
     @Body(new ValidationPipe()) createInput: CreateExtInput,
   ): Promise<number> {
+    const isAdmin = await this.userService.findAdminById(req.user.id);
+    if (!isAdmin) throw new UnauthorizedException();
     return await this.extService.update(id, createInput);
   }
 
   @Post('remove/:id')
   @UseGuards(JwtAuthGuard)
-  async removeExtension(@Param('id') id: number): Promise<number> {
+  async removeExtension(
+    @Req() req: ProtectedRequest,
+    @Param('id') id: number,
+  ): Promise<number> {
+    const isAdmin = await this.userService.findAdminById(req.user.id);
+    if (!isAdmin) throw new UnauthorizedException();
     return await this.extService.remove(id);
   }
 }

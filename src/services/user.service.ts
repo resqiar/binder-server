@@ -56,4 +56,13 @@ export class UserService {
       select: ['id', 'username', 'is_admin', 'profile_url', 'created_at'],
     });
   }
+
+  async findAdminById(id: string): Promise<User | null> {
+    return await this.userRepo.findOne({
+      where: {
+        id: id,
+        is_admin: true,
+      },
+    });
+  }
 }
