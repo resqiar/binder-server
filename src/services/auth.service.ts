@@ -1,31 +1,39 @@
-import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterInput } from 'src/dtos/register.input';
-import { User } from 'src/entities/user.entity';
-import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from './user.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
-  async register(registerInput: RegisterInput) {
-    const createdUser = this.userRepo.create(registerInput);
+  async register(registerInput: RegisterInput): Promise<{ key: string }> {
+    // Create the user and saved it inside the database
+    const createdUser = await this.userService.create(registerInput);
 
-    // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(registerInput.password, 12);
-    createdUser.password = hashedPassword;
-
-    return await this.userRepo.save(createdUser);
+    return {
+      key: this.generateToken(createdUser.id),
+    };
   }
 
-  async findByUsername(username: string) {
-    return await this.userRepo.findOneBy({
-      username: username,
-    });
+  async login(registerInput: RegisterInput): Promise<{ key: string } | null> {
+    const user = await this.userService.login(registerInput);
+
+    if (!user) return null;
+
+    return {
+      key: this.generateToken(user.id as string),
+    };
   }
 
-  async debug() {
-    return await this.userRepo.find();
+  generateToken(id: string): string {
+    // Create a JWT payload
+    const payload = { id: id };
+
+    // Generate JWT token using @nestjs/jwt package
+    return this.jwtService.sign(payload);
   }
 }
