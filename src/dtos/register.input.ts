@@ -18,5 +18,5 @@ export class RegisterInput {
 
   @IsUrl()
   @IsOptional()
-  profile_url: string;
+  profile_url?: string;
 }
