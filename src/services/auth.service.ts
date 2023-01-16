@@ -1,4 +1,4 @@
-import { RegisterInput } from 'src/dtos/register.input';
+import { RegisterInput } from '../dtos/register.input';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user.service';
 import { Injectable } from '@nestjs/common';

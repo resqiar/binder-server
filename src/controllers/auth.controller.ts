@@ -8,11 +8,11 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { RegisterInput } from 'src/dtos/register.input';
-import { User } from 'src/entities/user.entity';
-import { JwtAuthGuard } from 'src/guards/jwt.guard';
-import { AuthService } from 'src/services/auth.service';
-import { UserService } from 'src/services/user.service';
+import { RegisterInput } from '../dtos/register.input';
+import { User } from '../entities/user.entity';
+import { JwtAuthGuard } from '../guards/jwt.guard';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Controller('auth')
 export class AuthController {

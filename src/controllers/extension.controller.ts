@@ -11,8 +11,8 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { AdminGuard } from 'src/guards/admin.guard';
-import { JwtAuthGuard } from 'src/guards/jwt.guard';
+import { AdminGuard } from '../guards/admin.guard';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 import { CreateExtInput } from '../dtos/create-ext.input';
 import { Extension } from '../entities/extension.entity';
 import { ExtensionService } from '../services/extension.service';
