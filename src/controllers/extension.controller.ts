@@ -8,8 +8,11 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { AdminGuard } from '../guards/admin.guard';
+import { JwtAuthGuard } from '../guards/jwt.guard';
 import { CreateExtInput } from '../dtos/create-ext.input';
 import { Extension } from '../entities/extension.entity';
 import { ExtensionService } from '../services/extension.service';
@@ -40,6 +43,7 @@ export class ExtensionController {
   }
 
   @Post('create')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async createExtension(
     @Body(new ValidationPipe()) createInput: CreateExtInput,
   ): Promise<Extension> {
@@ -47,6 +51,7 @@ export class ExtensionController {
   }
 
   @Post('update/:id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async updateExtension(
     @Param('id') id: number,
     @Body(new ValidationPipe()) createInput: CreateExtInput,
@@ -55,6 +60,7 @@ export class ExtensionController {
   }
 
   @Post('remove/:id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async removeExtension(@Param('id') id: number): Promise<number> {
     return await this.extService.remove(id);
   }

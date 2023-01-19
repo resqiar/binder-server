@@ -2,8 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Extension } from '../../entities/extension.entity';
 import { ExtensionController } from '../../controllers/extension.controller';
 import { ExtensionService } from '../../services/extension.service';
-import { NotFoundException } from '@nestjs/common';
+import { CanActivate, NotFoundException } from '@nestjs/common';
 import { CreateExtInput } from '../../dtos/create-ext.input';
+import { AdminGuard } from '../../guards/admin.guard';
 
 describe('Extensions Controller', () => {
   let extController: ExtensionController;
@@ -45,6 +46,10 @@ describe('Extensions Controller', () => {
     }),
   };
 
+  const mockAdminGuard: CanActivate = {
+    canActivate: jest.fn(() => true),
+  };
+
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ExtensionController],
@@ -54,7 +59,10 @@ describe('Extensions Controller', () => {
           useValue: mockExtService,
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(AdminGuard)
+      .useValue(mockAdminGuard)
+      .compile();
     extController = app.get<ExtensionController>(ExtensionController);
   });
 
