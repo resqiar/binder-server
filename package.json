@@ -27,7 +27,7 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-fastify": "9.2.1",
     "@nestjs/typeorm": "9.0.1",
-    "@ts-morph/bootstrap": "^0.17.0",
+    "@ts-morph/bootstrap": "^0.18.0",
     "bcrypt": "^5.1.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
