@@ -3,7 +3,7 @@ import { CodeRunnerOutput } from '../controllers/code-runner.controller';
 import { CodeRunnerInput } from '../dtos/code-runner.input';
 import { createProject, ts } from '@ts-morph/bootstrap';
 import axios from 'axios';
-import tsc from 'typescript';
+import tsc, { ScriptTarget } from 'typescript';
 
 @Injectable()
 export class CodeRunnerService {
@@ -72,7 +72,13 @@ export class CodeRunnerService {
   async diagnosticTS(code: string): Promise<string | null> {
     // In memory file system creation
     // https://github.com/dsherret/ts-morph/tree/latest/packages/bootstrap#file-systems
-    const project = await createProject({ useInMemoryFileSystem: true });
+    const project = await createProject({
+      useInMemoryFileSystem: true,
+      compilerOptions: {
+        target: ScriptTarget.ES2017,
+        strict: true,
+      },
+    });
     project.createSourceFile('temp.ts', code);
 
     // Create a new program to create a new diagnostics sessions
