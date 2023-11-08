@@ -3011,10 +3011,10 @@ ignore@^5.2.0:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
 
-imagekit@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/imagekit/-/imagekit-4.1.1.tgz#94525363e0aeadfe6658e0e1b173398292f18ec7"
-  integrity sha512-pL0SWR8FXq8gtzyhWM19h8/Vjr6XNAbAO8YeiHinbs9b0KKNFhuDA5ehksqsPaMHAaB1MebUdoz77SwqCIwIoA==
+imagekit@4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/imagekit/-/imagekit-4.1.4.tgz#e19efc03f632d4d4352fe09470e89800b223ea56"
+  integrity sha512-yie0hMi+GVk8gtwi3hr3lwh/pAJv/jGpzteYOubs0I4h3Jic5xBXzWPrlGM4pPbAfWMr5UFXk8w0I4A1Xr6fDQ==
   dependencies:
     axios "^0.27.2"
     form-data "^4.0.0"
